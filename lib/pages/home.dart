@@ -1,5 +1,7 @@
 import 'package:crud/pages/employee.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:crud/service/database.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -9,6 +11,76 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  Stream<QuerySnapshot>? EmployeeStream;
+
+  getontheload() async {
+    EmployeeStream = await DatabaseMethods().getEmployeeDetails();
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    getontheload();
+    super.initState();
+  }
+
+  Widget allEmployeeDetails() {
+    return StreamBuilder(
+      stream: EmployeeStream,
+      builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        return snapshot.hasData
+            ? ListView.builder(
+              itemCount: snapshot.data!.docs.length,
+              itemBuilder: (context, index) {
+                DocumentSnapshot ds = snapshot.data!.docs[index];
+                return Material(
+                  elevation: 5.0,
+                  borderRadius: BorderRadius.circular(10),
+                  child: Container(
+                    padding: EdgeInsets.all(20),
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Name : " + ds["Name"],
+                          style: TextStyle(
+                            color: Colors.blue,
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          "Age : " + ds["Age"],
+                          style: TextStyle(
+                            color: Colors.orange,
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          "Location : " + ds["Location"],
+                          style: TextStyle(
+                            color: Colors.blue,
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            )
+            : Container();
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,14 +113,14 @@ class _HomeState extends State<Home> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            // Tambahkan widget lain di sini jika diperlukan
           ],
         ),
       ), // AppBar
       body: Container(
+        margin: EdgeInsets.only(left: 20.0, right: 20.0, top: 30.0),
         child: Column(
           children: [
-            // Tambahkan widget di sini
+            Expanded(child: allEmployeeDetails()), // Menampilkan data karyawan
           ],
         ),
       ), // Container
