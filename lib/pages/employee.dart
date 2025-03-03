@@ -23,7 +23,7 @@ class _EmployeeState extends State<Employee> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              "Employee",
+              "Form",
               style: TextStyle(
                 color: Colors.blue,
                 fontSize: 20.0,
@@ -32,7 +32,7 @@ class _EmployeeState extends State<Employee> {
             ),
             SizedBox(width: 5),
             Text(
-              "Form",
+              "Data",
               style: TextStyle(
                 color: Colors.orange,
                 fontSize: 20.0,
