@@ -1,6 +1,7 @@
 import 'package:crud/service/database.dart';
 import 'package:flutter/material.dart';
 import 'package:random_string/random_string.dart';
+import 'package:fluttertoast/fluttertoast.dart'; // Pastikan ini di-import
 
 class Employee extends StatefulWidget {
   const Employee({super.key});
@@ -10,9 +11,9 @@ class Employee extends StatefulWidget {
 }
 
 class _EmployeeState extends State<Employee> {
-  TextEditingController nameController = new TextEditingController();
-  TextEditingController ageController = new TextEditingController();
-  TextEditingController locationController = new TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController ageController = TextEditingController();
+  TextEditingController locationController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +30,7 @@ class _EmployeeState extends State<Employee> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(width: 5), // Jarak antara dua teks
+            SizedBox(width: 5),
             Text(
               "Form",
               style: TextStyle(
@@ -44,7 +45,7 @@ class _EmployeeState extends State<Employee> {
       body: Container(
         margin: EdgeInsets.only(left: 20.0, top: 30.0, right: 20.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start, // Biar teks rata kiri
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               "Name",
@@ -118,12 +119,20 @@ class _EmployeeState extends State<Employee> {
                     "Id": Id,
                     "Location": locationController.text,
                   };
-                  await DatabaseMethods().addEmployeeDetails(
-                    employeeInfoMap,
-                    Id,
+                  
+                  await DatabaseMethods().addEmployeeDetails(employeeInfoMap, Id);
+
+                  // Memunculkan toast setelah data berhasil disimpan
+                  Fluttertoast.showToast(
+                    msg: "Data berhasil ditambahkan!",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.CENTER,
+                    timeInSecForIosWeb: 1,
+                    backgroundColor: Colors.red,
+                    textColor: Colors.white,
+                    fontSize: 16.0,
                   );
                 },
-
                 child: Text(
                   "Add",
                   style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
@@ -133,6 +142,6 @@ class _EmployeeState extends State<Employee> {
           ],
         ),
       ),
-    ); // Scaffold
+    ); 
   }
 }
