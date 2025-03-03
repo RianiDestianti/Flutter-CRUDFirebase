@@ -52,7 +52,6 @@ class _HomeState extends State<Home> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
                                 "Name : " + ds["Name"],
@@ -62,6 +61,7 @@ class _HomeState extends State<Home> {
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
+                              Spacer(),
                               GestureDetector(
                                 onTap: () {
                                   nameController.text = ds["Name"];
@@ -71,6 +71,15 @@ class _HomeState extends State<Home> {
                                 },
 
                                 child: Icon(Icons.edit, color: Colors.orange),
+                              ),
+                              SizedBox(width: 5.0),
+                              GestureDetector(
+                                onTap: () async {
+                                  await DatabaseMethods().deleteEmployeeDetail(
+                                    ds["Id"],
+                                  );
+                                },
+                                child: Icon(Icons.delete, color: Colors.orange),
                               ),
                             ],
                           ),
